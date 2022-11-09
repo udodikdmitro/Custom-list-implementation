@@ -3,18 +3,31 @@ package package1;
 import java.util.*;
 
 public class CustomArrayList implements List<String> {
-    @Override
-    public int size() {
-        return 0;
+
+    public static int size(List<String> name) {
+        return name.size();
     }
 
     @Override
-    public boolean isEmpty() {
-        return false;
+    public boolean isEmpty(List<String> name) {
+
+        for (int i = 0; i < name.size(); i++ ) {
+            if (name.get(i) != null) {
+                return false;
+            }
+        }
+
+        return  true;
     }
 
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(List<String> name, Object o) {
+
+        for (int i = 0; i < name.size(); i++ ) {
+            if (name.get(i) != o) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -23,9 +36,9 @@ public class CustomArrayList implements List<String> {
         return null;
     }
 
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
+    public static Object[] toArray(List<String> name) {
+
+        return name.toArray(new String[name.size()]);
     }
 
     @Override
@@ -34,17 +47,45 @@ public class CustomArrayList implements List<String> {
     }
 
     @Override
-    public boolean add(String s) {
+    public boolean add(List<String> name, String s) {
+        String [] a = new String[name.size() + 1];
+
+        for (int i = 0; i < name.size(); i++) {
+            a[i] = name.get(i);
+        }
+        a[name.size() + 1] = s;
+        Arrays.asList(a);
+        return true;
+    }
+
+    @Override
+    public boolean remove(List<String> name, Object o) {
+        for (int i = 0; i < name.size(); i++) {
+            if (name.get(i).equals(o)) {
+                name.remove(name.get(i));
+
+                String [] a = new String[name.size() - 1];
+
+                for (int j = 0; j < i; j++) {
+                    a[j] = name.get(j);
+                }
+
+                for (int k = i + 1; k < name.size(); k++) {
+                    a[k] = name.get(k);
+                }
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
-    public boolean remove(Object o) {
-        return false;
-    }
+    public boolean containsAll(List<String> name, Collection<String> c) {
+        for (int i = 0; i < name.size(); i++) {
+            for (String s : c) {
 
-    @Override
-    public boolean containsAll(Collection<?> c) {
+            }
+        }
         return false;
     }
 
