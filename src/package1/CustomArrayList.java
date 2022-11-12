@@ -4,15 +4,27 @@ import java.util.*;
 
 public class CustomArrayList implements List<String> {
 
-    public static int size(List<String> name) {
-        return name.size();
+    String [] element;
+
+    public CustomArrayList() {
+        this.element = new String [10];
     }
 
     @Override
-    public boolean isEmpty(List<String> name) {
+    public int size() {
+        int i = 0;
 
-        for (int i = 0; i < name.size(); i++ ) {
-            if (name.get(i) != null) {
+        for (String s : element) {
+            i++;
+        }
+        return i;
+    }
+
+    @Override
+    public boolean isEmpty() {
+
+        for (String s : element) {
+            if (element != null) {
                 return false;
             }
         }
@@ -21,10 +33,10 @@ public class CustomArrayList implements List<String> {
     }
 
     @Override
-    public boolean contains(List<String> name, Object o) {
+    public boolean contains(Object o) {
 
-        for (int i = 0; i < name.size(); i++ ) {
-            if (name.get(i) != o) {
+        for (String s : element) {
+            if (s.equals(o)) {
                 return true;
             }
         }
@@ -33,57 +45,57 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public Iterator<String> iterator() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
-    public static Object[] toArray(List<String> name) {
-
-        return name.toArray(new String[name.size()]);
+    public Object[] toArray() {
+        return Arrays.copyOf(element, element.length);
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean add(List<String> name, String s) {
-        String [] a = new String[name.size() + 1];
+    public boolean add(String s) {
+        String [] a = new String[element.length + 1];
 
-        for (int i = 0; i < name.size(); i++) {
-            a[i] = name.get(i);
+        for (int i = 0; i < element.length; i++) {
+            a[i] = element[i];
         }
-        a[name.size() + 1] = s;
-        Arrays.asList(a);
+        a[element.length] = s;
+// Array "a" is a new array, and I must use array "element".
+// Also, I must do a part of the method, which defines condition "false".
         return true;
     }
 
     @Override
-    public boolean remove(List<String> name, Object o) {
-        for (int i = 0; i < name.size(); i++) {
-            if (name.get(i).equals(o)) {
-                name.remove(name.get(i));
+    public boolean remove(Object o) {
+        for (int i = 0; i < element.length; i++) {
 
-                String [] a = new String[name.size() - 1];
+            if (element[i].equals(o)) {
+                String [] a = new String[element.length - 1];
 
                 for (int j = 0; j < i; j++) {
-                    a[j] = name.get(j);
+                    a[j] = element[j];
                 }
 
-                for (int k = i + 1; k < name.size(); k++) {
-                    a[k] = name.get(k);
+                for (int k = i + 1; k < element.length; k++) {
+                    a[k] = element[k];
                 }
                 return true;
             }
         }
+//        There is a problem as in a method "add".
         return false;
     }
 
     @Override
-    public boolean containsAll(List<String> name, Collection<String> c) {
-        for (int i = 0; i < name.size(); i++) {
-            for (String s : c) {
-
+    public boolean containsAll(Collection<?> c) {
+        for (int i = 0; i < element.length; i++) {
+            for (Object s : c) {
+//         How to make this method with objects??
             }
         }
         return false;
@@ -146,12 +158,12 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public ListIterator<String> listIterator() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public ListIterator<String> listIterator(int index) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
