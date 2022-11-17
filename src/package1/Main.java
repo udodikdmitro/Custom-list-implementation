@@ -1,6 +1,7 @@
 package package1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -18,7 +19,16 @@ public class Main {
         l1.size();
         System.out.println(l1.size());
 
-        System.out.println(l2);
+        for(int i = 0; i < 2; i++){
+            System.out.println(l1.size());
+        }
+
+        String[] s1 = {"hello","world"};
+        String[] s2 = {"привет","мир"};
+        String[] s3 = new String[10];
+
+        System.arraycopy(s1, 0, s3, 5, 1);
+        System.out.println(Arrays.toString(s3));
     }
 
 }

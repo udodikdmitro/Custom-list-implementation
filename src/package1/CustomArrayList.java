@@ -4,43 +4,46 @@ import java.util.*;
 
 public class CustomArrayList implements List<String> {
 
-    String [] element;
+    String[] elements;
 
     public CustomArrayList() {
-        this.element = new String [10];
+        this.elements = new String [10];
     }
 
     @Override
     public int size() {
         int i = 0;
 
-        for (String s : element) {
+        for (String s : elements) {
             i++;
         }
         return i;
     }
 
+//    Считать size в методе add.
+
     @Override
     public boolean isEmpty() {
 
-        for (String s : element) {
-            if (element != null) {
+        for (String s : elements) {
+            if (s != null) {
                 return false;
             }
         }
-
-        return  true;
+// Определять через size.
+        return true;
     }
 
     @Override
     public boolean contains(Object o) {
 
-        for (String s : element) {
+        for (String s : elements) {
             if (s.equals(o)) {
                 return true;
             }
         }
         return false;
+//        Перебирать в цикле только элементы-обьекты.
     }
 
     @Override
@@ -48,8 +51,9 @@ public class CustomArrayList implements List<String> {
         throw new UnsupportedOperationException();
     }
 
+//    Скопировать только объекты
     public Object[] toArray() {
-        return Arrays.copyOf(element, element.length);
+        return Arrays.copyOf(elements, elements.length);
     }
 
     @Override
@@ -59,61 +63,157 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public boolean add(String s) {
-        String [] a = new String[element.length + 1];
 
-        for (int i = 0; i < element.length; i++) {
-            a[i] = element[i];
+        for (int i = 0; i < elements.length; i++) {
+
+            if (elements[i] == null) {
+                elements[i] = s;
+                return elements[i].equals(s);
+            }
         }
-        a[element.length] = s;
-// Array "a" is a new array, and I must use array "element".
-// Also, I must do a part of the method, which defines condition "false".
-        return true;
+
+        String[] a = new String[(int) (elements.length * 1.5)];
+
+        a[elements.length + 1] = s;
+
+        elements = a;
+
+//        Добавлять элементы через size+1
+// Создать новый массив тогда, когда не будет места в старом.
+        // Array "a" is a new array, and I must use array "el".
+        return a[elements.length + 1].equals(s);
     }
 
+//    Використовувати size замість length
+//    Елементи мають переміщуватись вліво в сторону видаленого елемента.
     @Override
     public boolean remove(Object o) {
-        for (int i = 0; i < element.length; i++) {
 
-            if (element[i].equals(o)) {
-                String [] a = new String[element.length - 1];
+        for (int i = 0; i < elements.length; i++) {
 
-                for (int j = 0; j < i; j++) {
-                    a[j] = element[j];
-                }
-
-                for (int k = i + 1; k < element.length; k++) {
-                    a[k] = element[k];
-                }
+            if (elements[i].equals(o)) {
+                elements[i] = null;
                 return true;
             }
         }
-//        There is a problem as in a method "add".
+
         return false;
     }
 
+    //Використовувати size.
     @Override
     public boolean containsAll(Collection<?> c) {
-        for (int i = 0; i < element.length; i++) {
-            for (Object s : c) {
-//         How to make this method with objects??
+
+        int j = 0;
+
+        for (Object s : c) {
+
+            for (int i = 0; i < elements.length; i++) {
+                if (elements[i].equals(s)) {
+                    j++;
+                }
             }
         }
-        return false;
+
+        if (j == c.size()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean addAll(Collection<? extends String> c) {
-        return false;
+
+        int i = 0;
+        // Capacity - size = кількість вільних комірок. Якщо їх менше, ніж c.size,
+        // потрібно збільшувати масив.
+        for (String s : elements) {
+
+            if (s == null) {
+                i++;
+            }
+        }
+
+        if (i >= c.size()) {
+
+            int j = 0;
+
+            // додавання елементів колекції в масив можна так. Отримуємо масив із
+            // колекції через toArray, отриманий масив копіюємо System.arraycopy
+            // (як опиcано в main)
+            for (Object o : c) {
+                elements[elements.length - i + j] = (String) o;
+                j++;
+            }
+
+        } else {
+
+//            String[] a = new String[(int) (el.length + c.size() * 1.5)];
+
+            String[] a = Arrays.copyOf(elements, (int) (elements.length + c.size() * 1.5));
+
+//            for (int j = 0; j < el.length; j++) {
+//                a[j] = el[j];
+//            }
+
+            int j = 0;
+
+            for (Object o : c) {
+                a[elements.length - i + j] = (String) o;
+                j++;
+            }
+
+        }
+
+        return true;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends String> c) {
-        return false;
+
+        String[] a = new String[elements.length + c.size()];
+
+//        По аналогії, як addAll.
+
+        for (int i = 0; i < index; i++) {
+            a[i] = elements[i];
+        }
+
+        for (String s : c) {
+            add(s);
+        }
+
+        for (int i = index; i < elements.length; i++) {
+            a[i + c.size()] = elements[i];
+        }
+
+        for (String s : a) {
+
+            if (s == null) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+
+//        size!!!! Потрібно створии новий масив без видаляємих елементів.
+
+        for (Object s : c) {
+
+            for (int i = 0; i < elements.length; i++) {
+
+                if (elements[i].equals(s)){
+                    remove(elements[i]);
+                }
+            }
+         }
+
+        return true;
     }
 
     @Override
@@ -123,12 +223,12 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public void clear() {
-
+        elements = new String[10];
     }
 
     @Override
     public String get(int index) {
-        return null;
+        return elements[index];
     }
 
     @Override
@@ -136,9 +236,21 @@ public class CustomArrayList implements List<String> {
         return null;
     }
 
+//    Використовувати System.arraycopy.
     @Override
     public void add(int index, String element) {
 
+        String[] a = new String[elements.length + 1];
+
+        for (int i = 0; i < index; i++) {
+            a[i] = elements[i];
+        }
+
+        a[index] = element;
+
+        for (int i = index; i < elements.length; i++) {
+            a[index + 1] = elements[i];
+        }
     }
 
     @Override
