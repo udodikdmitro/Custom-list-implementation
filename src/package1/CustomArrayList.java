@@ -5,6 +5,7 @@ import java.util.*;
 public class CustomArrayList implements List<String> {
 
     String[] elements;
+    int size = 0;
 
     public CustomArrayList() {
         this.elements = new String [10];
@@ -12,38 +13,29 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public int size() {
-        int i = 0;
 
-        for (String s : elements) {
-            i++;
-        }
-        return i;
+        return size;
     }
-
-//    Считать size в методе add.
 
     @Override
     public boolean isEmpty() {
 
-        for (String s : elements) {
-            if (s != null) {
-                return false;
-            }
+        if (size == 0) {
+            return true;
         }
-// Определять через size.
+
         return true;
     }
 
     @Override
     public boolean contains(Object o) {
 
-        for (String s : elements) {
-            if (s.equals(o)) {
+        for (int i = 0; i < size; i++) {
+            if (elements[i].equals(o)) {
                 return true;
             }
         }
         return false;
-//        Перебирать в цикле только элементы-обьекты.
     }
 
     @Override
@@ -51,9 +43,8 @@ public class CustomArrayList implements List<String> {
         throw new UnsupportedOperationException();
     }
 
-//    Скопировать только объекты
     public Object[] toArray() {
-        return Arrays.copyOf(elements, elements.length);
+        return Arrays.copyOf(elements, size);
     }
 
     @Override
@@ -64,24 +55,15 @@ public class CustomArrayList implements List<String> {
     @Override
     public boolean add(String s) {
 
-        for (int i = 0; i < elements.length; i++) {
+        elements[size] = s;
+        size++;
 
-            if (elements[i] == null) {
-                elements[i] = s;
-                return elements[i].equals(s);
-            }
+        if (size == elements.length) {
+            String[] a = new String[(int) (elements.length * 1.5)];
+            elements = a;
         }
 
-        String[] a = new String[(int) (elements.length * 1.5)];
-
-        a[elements.length + 1] = s;
-
-        elements = a;
-
-//        Добавлять элементы через size+1
-// Создать новый массив тогда, когда не будет места в старом.
-        // Array "a" is a new array, and I must use array "el".
-        return a[elements.length + 1].equals(s);
+        return true;
     }
 
 //    Використовувати size замість length
