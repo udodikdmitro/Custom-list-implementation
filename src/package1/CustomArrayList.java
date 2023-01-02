@@ -4,27 +4,35 @@ import java.util.*;
 
 public class CustomArrayList implements List<String> {
 
-    public static int size(List<String> name) {
-        return name.size();
+    private String[] elements;
+    private int size = 0;
+
+    public CustomArrayList() {
+        this.elements = new String[10];
     }
 
-    @Override
-    public boolean isEmpty(List<String> name) {
-
-        for (int i = 0; i < name.size(); i++ ) {
-            if (name.get(i) != null) {
-                return false;
-            }
+    public CustomArrayList(int capacity) {
+        if(capacity < 1) {
+            throw new IllegalArgumentException("Capacity cannot be less than 1");
         }
+        this.elements = new String[capacity];
+    }
 
-        return  true;
+
+    @Override
+    public int size() {
+        return size;
     }
 
     @Override
-    public boolean contains(List<String> name, Object o) {
+    public boolean isEmpty() {
+        return size == 0;
+    }
 
-        for (int i = 0; i < name.size(); i++ ) {
-            if (name.get(i) != o) {
+    @Override
+    public boolean contains(Object o) {
+        for(String s: this){
+            if (s.equals(o)) {
                 return true;
             }
         }
@@ -33,129 +41,219 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public Iterator<String> iterator() {
-        return null;
+        return new CustomArrayListIterator(this);
     }
 
-    public static Object[] toArray(List<String> name) {
-
-        return name.toArray(new String[name.size()]);
+    public Object[] toArray() {
+        return Arrays.copyOf(elements, size);
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean add(List<String> name, String s) {
-        String [] a = new String[name.size() + 1];
+    public boolean add(String s) {
+        elements[size] = s;
+        size++;
 
-        for (int i = 0; i < name.size(); i++) {
-            a[i] = name.get(i);
+        if (size == elements.length) {
+            elements = Arrays.copyOf(elements, (int) (elements.length * 1.5 + 1));
         }
-        a[name.size() + 1] = s;
-        Arrays.asList(a);
         return true;
     }
 
     @Override
-    public boolean remove(List<String> name, Object o) {
-        for (int i = 0; i < name.size(); i++) {
-            if (name.get(i).equals(o)) {
-                name.remove(name.get(i));
+    public boolean remove(Object o) {
+        for (int i = 0; i < size; i++) {
 
-                String [] a = new String[name.size() - 1];
+            if (elements[i].equals(o)) {
+                String[] newElements = new String[elements.length];
+                int newLastPosition = size - i - 1;
 
-                for (int j = 0; j < i; j++) {
-                    a[j] = name.get(j);
-                }
-
-                for (int k = i + 1; k < name.size(); k++) {
-                    a[k] = name.get(k);
-                }
+                System.arraycopy(elements, 0, newElements, 0, i);
+                System.arraycopy(elements, i + 1, newElements, i, newLastPosition);
+                elements = newElements;
+                size--;
                 return true;
             }
         }
         return false;
     }
 
+//    Перевизначити метод Iterator.
+//    Використовувати метод contains().
     @Override
-    public boolean containsAll(List<String> name, Collection<String> c) {
-        for (int i = 0; i < name.size(); i++) {
-            for (String s : c) {
-
+    public boolean containsAll(Collection<?> c) {
+        for (Object s : c) {
+            if(!this.contains(s)){
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     @Override
     public boolean addAll(Collection<? extends String> c) {
-        return false;
+        if (c.size() < elements.length - size) {
+            String[] a = Arrays.copyOf(elements, (int) (elements.length + c.size() * 1.5));
+            elements = a;
+        }
+
+        System.arraycopy(elements, size, c, 0, c.size() - 1);
+        size=+c.size();
+
+        return true;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends String> c) {
-        return false;
+        if (c.size() < elements.length - size) {
+            String[] a = Arrays.copyOf(elements, (int) (elements.length + c.size() * 1.5));
+            elements = a;
+        }
+
+        System.arraycopy(elements, index, c, 0, c.size());
+        size=+c.size();
+        return true;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        int arrayIndex = 0;
+        String [] a = new String[elements.length];
+
+        for (String sElements : elements) {
+            int counter = 0;
+
+            for (Object sCollection : c) {
+                if (!sElements.equals(sCollection)){
+                  counter++;
+                }
+            }
+
+            if(counter != c.size()){
+                a[arrayIndex] = sElements;
+                arrayIndex++;
+            }
+         }
+        elements = a;
+        return true;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        int arrayIndex = 0;
+        String [] a = new String[elements.length];
+
+        for (String sElements : elements) {
+
+            for (Object sCollection : c) {
+                if (sElements.equals(sCollection)){
+                    a[arrayIndex] = sElements;
+                    arrayIndex++;
+                }
+            }
+        }
+        elements = a;
+        return true;
     }
 
     @Override
     public void clear() {
-
+        elements = new String[size];
+        size = 0;
     }
 
     @Override
     public String get(int index) {
-        return null;
+        return elements[index];
     }
 
     @Override
     public String set(int index, String element) {
-        return null;
+        String el = elements[index];
+        elements[index] = element;
+        return el;
     }
 
     @Override
     public void add(int index, String element) {
+        System.arraycopy(elements, index, elements, index + 1,
+                size - index);
+        elements[index] = element;
+        size++;
 
+        if (size == elements.length) {
+            String[] a = Arrays.copyOf(elements, (int) (elements.length * 1.5 + 1));
+            elements = a;
+        }
     }
 
     @Override
     public String remove(int index) {
-        return null;
+        String [] a = new String[elements.length];
+        String el = elements[index];
+        System.arraycopy(elements, 0, a, 0, index);
+        System.arraycopy(elements, index + 1, a, index, size - index - 1);
+        elements = a;
+        size--;
+        return el;
     }
 
     @Override
     public int indexOf(Object o) {
+        for (int i = 0; i < size; i++) {
+            if (elements[i].equals(o)) {
+                return i;
+            }
+        }
         return 0;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        int index = 0;
+
+         for (int i = 0; i < size; i++) {
+
+             if (elements[i].equals(o)) {
+                 index = i;
+             }
+         }
+        return index;
     }
 
     @Override
     public ListIterator<String> listIterator() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public ListIterator<String> listIterator(int index) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<String> subList(int fromIndex, int toIndex) {
         return null;
+    }
+
+    /*
+e1 = "JAva"
+e2 = "is"
+e3 ="cool"
+e4 = null
+...
+
+toString()
+["Java", "is", "cool"]
+
+Використовувати println без toString. Переглянути клас StringBuilder.
+     */
+    @Override
+    public String toString() {
+        return "";
     }
 }
