@@ -27,8 +27,8 @@ public class Main {
         l2.remove("bye");
         System.out.println("Remove: " + Arrays.toString(l2.toArray()));
 
-//        l2.add("bye");
-//        System.out.println("Contains c: " + l2.containsAll(l1));
+        l2.add("bye");
+        System.out.println("Contains c: " + l2.containsAll(l1));
 
 //        l2.addAll(l1);
 //        System.out.println("Add collection: " + Arrays.toString(l2.toArray()));

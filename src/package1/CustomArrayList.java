@@ -4,34 +4,35 @@ import java.util.*;
 
 public class CustomArrayList implements List<String> {
 
-    String[] elements;
-    int size = 0;
+    private String[] elements;
+    private int size = 0;
 
     public CustomArrayList() {
-        this.elements = new String [10];
+        this.elements = new String[10];
     }
+
+    public CustomArrayList(int capacity) {
+        if(capacity < 1) {
+            throw new IllegalArgumentException("Capacity cannot be less than 1");
+        }
+        this.elements = new String[capacity];
+    }
+
 
     @Override
     public int size() {
-
         return size;
     }
 
     @Override
     public boolean isEmpty() {
-
-        if (size == 0) {
-            return true;
-        }
-
-        return true;
+        return size == 0;
     }
 
     @Override
     public boolean contains(Object o) {
-
-        for (int i = 0; i < size; i++) {
-            if (elements[i].equals(o)) {
+        for(String s: this){
+            if (s.equals(o)) {
                 return true;
             }
         }
@@ -40,7 +41,7 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public Iterator<String> iterator() {
-        throw new UnsupportedOperationException();
+        return new CustomArrayListIterator(this);
     }
 
     public Object[] toArray() {
@@ -54,62 +55,47 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public boolean add(String s) {
-
         elements[size] = s;
         size++;
 
         if (size == elements.length) {
-            String[] a = Arrays.copyOf(elements, (int) (elements.length * 1.5 + 1));
-            // Fragment "+ 1" was added because if size = 1
-            // then (int)1.5 = 1 and array shan't be bigger.
-            elements = a;
+            elements = Arrays.copyOf(elements, (int) (elements.length * 1.5 + 1));
         }
-
         return true;
     }
 
     @Override
     public boolean remove(Object o) {
-
         for (int i = 0; i < size; i++) {
 
             if (elements[i].equals(o)) {
-                String a [] = new String[elements.length];
+                String[] newElements = new String[elements.length];
+                int newLastPosition = size - i - 1;
 
-                System.arraycopy(elements, 0, a, 0, i);
-                System.arraycopy(elements, i + 1, a, i, size - i -1);
-                elements = a;
+                System.arraycopy(elements, 0, newElements, 0, i);
+                System.arraycopy(elements, i + 1, newElements, i, newLastPosition);
+                elements = newElements;
+                size--;
                 return true;
             }
         }
-
         return false;
     }
 
+//    Перевизначити метод Iterator.
+//    Використовувати метод contains().
     @Override
     public boolean containsAll(Collection<?> c) {
-
-        int amountOfMatch = 0;
-
         for (Object s : c) {
-
-            for (int i = 0; i < size; i++) {
-                if (elements[i].equals(s)) {
-                    amountOfMatch++;
-                }
+            if(!this.contains(s)){
+                return false;
             }
         }
-
-        if (amountOfMatch == c.size()) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     @Override
     public boolean addAll(Collection<? extends String> c) {
-
         if (c.size() < elements.length - size) {
             String[] a = Arrays.copyOf(elements, (int) (elements.length + c.size() * 1.5));
             elements = a;
@@ -123,7 +109,6 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public boolean addAll(int index, Collection<? extends String> c) {
-
         if (c.size() < elements.length - size) {
             String[] a = Arrays.copyOf(elements, (int) (elements.length + c.size() * 1.5));
             elements = a;
@@ -136,7 +121,6 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-
         int arrayIndex = 0;
         String [] a = new String[elements.length];
 
@@ -178,20 +162,17 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public void clear() {
-
         elements = new String[size];
         size = 0;
     }
 
     @Override
     public String get(int index) {
-
         return elements[index];
     }
 
     @Override
     public String set(int index, String element) {
-
         String el = elements[index];
         elements[index] = element;
         return el;
@@ -199,7 +180,6 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public void add(int index, String element) {
-
         System.arraycopy(elements, index, elements, index + 1,
                 size - index);
         elements[index] = element;
@@ -213,7 +193,6 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public String remove(int index) {
-
         String [] a = new String[elements.length];
         String el = elements[index];
         System.arraycopy(elements, 0, a, 0, index);
@@ -225,7 +204,6 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public int indexOf(Object o) {
-
         for (int i = 0; i < size; i++) {
             if (elements[i].equals(o)) {
                 return i;
@@ -236,7 +214,6 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public int lastIndexOf(Object o) {
-
         int index = 0;
 
          for (int i = 0; i < size; i++) {
@@ -261,5 +238,22 @@ public class CustomArrayList implements List<String> {
     @Override
     public List<String> subList(int fromIndex, int toIndex) {
         return null;
+    }
+
+    /*
+e1 = "JAva"
+e2 = "is"
+e3 ="cool"
+e4 = null
+...
+
+toString()
+["Java", "is", "cool"]
+
+Використовувати println без toString. Переглянути клас StringBuilder.
+     */
+    @Override
+    public String toString() {
+        return "";
     }
 }
