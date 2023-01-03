@@ -100,12 +100,8 @@ public class CustomArrayList implements List<String> {
             String[] a = Arrays.copyOf(elements, (int) (elements.length + c.size() * 1.5));
             elements = a;
         }
-        int numElementC = 0;
-
-        for (String s: c){
-            elements[size + numElementC] = s;
-            numElementC++;
-        }
+        Object[] arrayC = c.toArray();
+        System.arraycopy(arrayC, 0, elements, size, c.size());
         size = size + c.size();
         return true;
     }
