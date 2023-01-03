@@ -30,8 +30,8 @@ public class Main {
         l2.add("bye");
         System.out.println("Contains c: " + l2.containsAll(l1));
 
-//        l2.addAll(l1);
-//        System.out.println("Add collection: " + Arrays.toString(l2.toArray()));
+        l2.addAll(l1);
+        System.out.println("Add collection: " + Arrays.toString(l2.toArray()));
 
 //        l2.addAll(1, l1);
 //        System.out.println("Add collection in position: " + Arrays.toString(l2.toArray()));
