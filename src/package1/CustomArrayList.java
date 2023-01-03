@@ -117,8 +117,13 @@ public class CustomArrayList implements List<String> {
             elements = a;
         }
 
-        System.arraycopy(elements, index, c, 0, c.size());
-        size=+c.size();
+        int numElementC = 0;
+
+        for (String s: c){
+            elements[size + numElementC] = s;
+            numElementC++;
+        }
+        size = size + c.size();
         return true;
     }
 
