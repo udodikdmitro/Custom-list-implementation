@@ -125,21 +125,22 @@ public class CustomArrayList implements List<String> {
         int arrayIndex = 0;
         String [] a = new String[elements.length];
 
-        for (String sElements : elements) {
+        for (int i = 0; i < size; i++) {
             int counter = 0;
 
             for (Object sCollection : c) {
-                if (!sElements.equals(sCollection)){
+                if (!elements[i].equals(sCollection)){
                   counter++;
                 }
             }
 
-            if(counter != c.size()){
-                a[arrayIndex] = sElements;
+            if(counter == c.size()){
+                a[arrayIndex] = elements[i];
                 arrayIndex++;
             }
          }
         elements = a;
+        size = arrayIndex;
         return true;
     }
 
