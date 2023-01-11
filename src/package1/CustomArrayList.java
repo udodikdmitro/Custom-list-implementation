@@ -123,23 +123,14 @@ public class CustomArrayList implements List<String> {
     @Override
     public boolean removeAll(Collection<?> c) {
         int arrayIndex = 0;
-        String [] a = new String[elements.length];
 
-        for (String sElements : elements) {
-            int counter = 0;
-
-            for (Object sCollection : c) {
-                if (!sElements.equals(sCollection)){
-                  counter++;
-                }
-            }
-
-            if(counter != c.size()){
-                a[arrayIndex] = sElements;
+        for (String str: this){
+            if(!c.contains(str)){
+                elements[arrayIndex] = str;
                 arrayIndex++;
             }
          }
-        elements = a;
+        size = arrayIndex;
         return true;
     }
 

@@ -36,9 +36,9 @@ public class Main {
         l2.addAll(1, l1);
         System.out.println("Add collection in position: " + Arrays.toString(l2.toArray()));
 
-//        l2.removeAll(l1);
-//        System.out.println("Remove elements from a list, which collection have: "
-//                + Arrays.toString(l2.toArray()));
+        l2.removeAll(l1);
+        System.out.println("Remove elements from a list, which collection have: "
+                + Arrays.toString(l2.toArray()));
 
 //        l2.retainAll(l1);
 //        System.out.println("Remove elements from a list, which collection haven't: "
