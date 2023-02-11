@@ -12,7 +12,7 @@ public class CustomArrayList implements List<String> {
     }
 
     public CustomArrayList(int capacity) {
-        if(capacity < 1) {
+        if (capacity < 1) {
             throw new IllegalArgumentException("Capacity cannot be less than 1");
         }
         this.elements = new String[capacity];
@@ -31,7 +31,7 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public boolean contains(Object o) {
-        for(String s: this){
+        for (String s : this) {
             if (s.equals(o)) {
                 return true;
             }
@@ -82,12 +82,12 @@ public class CustomArrayList implements List<String> {
         return false;
     }
 
-//    Перевизначити метод Iterator.
+    //    Перевизначити метод Iterator.
 //    Використовувати метод contains().
     @Override
     public boolean containsAll(Collection<?> c) {
         for (Object s : c) {
-            if(!this.contains(s)){
+            if (!this.contains(s)) {
                 return false;
             }
         }
@@ -124,12 +124,12 @@ public class CustomArrayList implements List<String> {
     public boolean removeAll(Collection<?> c) {
         int arrayIndex = 0;
 
-        for (String str: this){
-            if(!c.contains(str)){
+        for (String str : this) {
+            if (!c.contains(str)) {
                 elements[arrayIndex] = str;
                 arrayIndex++;
             }
-         }
+        }
         size = arrayIndex;
         return true;
     }
@@ -137,18 +137,45 @@ public class CustomArrayList implements List<String> {
     @Override
     public boolean retainAll(Collection<?> c) {
         int arrayIndex = 0;
-        String [] a = new String[elements.length];
-
-        for (String sElements : elements) {
-
-            for (Object sCollection : c) {
-                if (sElements.equals(sCollection)){
-                    a[arrayIndex] = sElements;
-                    arrayIndex++;
-                }
+//        1. Цикл, в якому перевіряється, чи є збіги взагалі і ведеться лічильник,
+//        з якого почати роботу.
+//        2. Вести два лічильника, один куди присвоювати, другий звідки присвоювати.
+//        3. Використовувати метод contains(Object).
+//        4. В іншому циклі перевіряти на збіги і переприсвоювати елемент,
+//        провіряючи його на предмет збігу.
+        for (int i = 0; i < size; i++) {
+            // Examination for containing of elements
+            // and getting a start index of appropriation.
+            if (c.contains(elements[i])) {
+                arrayIndex = i;
+                break;
+            }
+        //Examination of ending and exit of method.
+            // It means that collection hasn't coincidences.
+            // Create an empty array.
+            if (i == size - 1) {
+                elements = new String[size];
+                size = 0;
+                return true;
             }
         }
-        elements = a;
+        //If the method comes here, we create a new array and appropriate his first element.
+        //Create a new counter of a new array.
+        String[] newArray = new String[elements.length];
+        newArray[0] = elements[arrayIndex];
+        int newArrayIndex = 1;
+
+        //By using a counter "i" we're going into a remainder of our array.
+        //The elements which are contained in a collection we appropriate for a new array.
+        for (int i = arrayIndex + 1; i < size; i++) {
+            if (c.contains(elements[i])) {
+                newArray[newArrayIndex] = elements[i];
+                newArrayIndex++;
+            }
+        }
+        //Make a new array to our array and define a quantity of elements for output.
+        elements = newArray;
+        size = newArrayIndex;
         return true;
     }
 
@@ -185,7 +212,7 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public String remove(int index) {
-        String [] a = new String[elements.length];
+        String[] a = new String[elements.length];
         String el = elements[index];
         System.arraycopy(elements, 0, a, 0, index);
         System.arraycopy(elements, index + 1, a, index, size - index - 1);
@@ -208,12 +235,12 @@ public class CustomArrayList implements List<String> {
     public int lastIndexOf(Object o) {
         int index = 0;
 
-         for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
 
-             if (elements[i].equals(o)) {
-                 index = i;
-             }
-         }
+            if (elements[i].equals(o)) {
+                index = i;
+            }
+        }
         return index;
     }
 

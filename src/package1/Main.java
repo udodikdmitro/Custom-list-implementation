@@ -40,9 +40,9 @@ public class Main {
         System.out.println("Remove elements from a list, which collection have: "
                 + Arrays.toString(l2.toArray()));
 
-//        l2.retainAll(l1);
-//        System.out.println("Remove elements from a list, which collection haven't: "
-//            + Arrays.toString(l2.toArray()));
+        l2.retainAll(l1);
+        System.out.println("Remove elements from a list, which collection haven't: "
+            + Arrays.toString(l2.toArray()));
 
         l2.clear();
         System.out.println("Clear list: " + Arrays.toString(l2.toArray()));
