@@ -166,7 +166,7 @@ public class CustomArrayList implements List<String> {
                 newArrayIndex++;
             }
         }
-        // We are copy suitable elements to new thisArray
+        // Copy suitable elements to new thisArray
         // and define the number of elements for output.
         size = newArrayIndex;
         System.arraycopy(elements, 0, elements, 0, size);
