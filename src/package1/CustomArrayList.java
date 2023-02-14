@@ -12,7 +12,7 @@ public class CustomArrayList implements List<String> {
     }
 
     public CustomArrayList(int capacity) {
-        if(capacity < 1) {
+        if (capacity < 1) {
             throw new IllegalArgumentException("Capacity cannot be less than 1");
         }
         this.elements = new String[capacity];
@@ -31,7 +31,7 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public boolean contains(Object o) {
-        for(String s: this){
+        for (String s : this) {
             if (s.equals(o)) {
                 return true;
             }
@@ -82,12 +82,12 @@ public class CustomArrayList implements List<String> {
         return false;
     }
 
-//    Перевизначити метод Iterator.
+    //    Перевизначити метод Iterator.
 //    Використовувати метод contains().
     @Override
     public boolean containsAll(Collection<?> c) {
         for (Object s : c) {
-            if(!this.contains(s)){
+            if (!this.contains(s)) {
                 return false;
             }
         }
@@ -124,12 +124,12 @@ public class CustomArrayList implements List<String> {
     public boolean removeAll(Collection<?> c) {
         int arrayIndex = 0;
 
-        for (String str: this){
-            if(!c.contains(str)){
+        for (String str : this) {
+            if (!c.contains(str)) {
                 elements[arrayIndex] = str;
                 arrayIndex++;
             }
-         }
+        }
         size = arrayIndex;
         return true;
     }
@@ -137,18 +137,39 @@ public class CustomArrayList implements List<String> {
     @Override
     public boolean retainAll(Collection<?> c) {
         int arrayIndex = 0;
-        String [] a = new String[elements.length];
-
-        for (String sElements : elements) {
-
-            for (Object sCollection : c) {
-                if (sElements.equals(sCollection)){
-                    a[arrayIndex] = sElements;
-                    arrayIndex++;
-                }
+        for (int i = 0; i < size; i++) {
+            // Checking of containing of elements
+            // and getting a start index of appropriation.
+            if (c.contains(elements[i])) {
+                arrayIndex = i;
+                break;
+            }
+            // Checking of ending and exit of method.
+            // It means that collection hasn't coincidences.
+            // Create an empty array.
+            if (i == size - 1) {
+                clear();
+                return true;
             }
         }
-        elements = a;
+        // We assign a first element to thisArray if the method comes here.
+        //Create a new counter of a new thisArray.
+        elements[0] = elements[arrayIndex];
+        int newArrayIndex = 1;
+
+
+        // We're going into a remainder of previous thisArray by using a counter "i".
+        // We assign the elements are contained in a collection for a new thisArray.
+        for (int i = arrayIndex + 1; i < size; i++) {
+            if (c.contains(elements[i])) {
+                elements[newArrayIndex] = elements[i];
+                newArrayIndex++;
+            }
+        }
+        // We are copy suitable elements to new thisArray
+        // and define the number of elements for output.
+        size = newArrayIndex;
+        System.arraycopy(elements, 0, elements, 0, size);
         return true;
     }
 
@@ -185,7 +206,7 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public String remove(int index) {
-        String [] a = new String[elements.length];
+        String[] a = new String[elements.length];
         String el = elements[index];
         System.arraycopy(elements, 0, a, 0, index);
         System.arraycopy(elements, index + 1, a, index, size - index - 1);
@@ -208,12 +229,12 @@ public class CustomArrayList implements List<String> {
     public int lastIndexOf(Object o) {
         int index = 0;
 
-         for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
 
-             if (elements[i].equals(o)) {
-                 index = i;
-             }
-         }
+            if (elements[i].equals(o)) {
+                index = i;
+            }
+        }
         return index;
     }
 
