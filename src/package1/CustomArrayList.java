@@ -250,7 +250,10 @@ public class CustomArrayList implements List<String> {
 
     @Override
     public List<String> subList(int fromIndex, int toIndex) {
-        return null;
+        String[] ar = new String[toIndex - fromIndex + 1];
+        System.arraycopy(elements,
+                fromIndex, ar, 0, (toIndex - fromIndex + 1));
+        return Arrays.asList(ar);
     }
 
     /*
@@ -267,6 +270,13 @@ toString()
      */
     @Override
     public String toString() {
-        return "";
+        StringBuilder s = new StringBuilder("[\"" + elements[0] + "\",");
+        for (int i = 1; i < size - 1; i++) {
+            if(elements[i] != null) {
+                s.append(" \"").append(elements[i]).append("\"").append(",");
+            }
+        }
+        s.append(" \"").append(elements[size - 1]).append("\"").append("]");
+        return s.substring(0);
     }
 }
