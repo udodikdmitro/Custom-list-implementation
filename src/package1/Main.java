@@ -40,9 +40,9 @@ public class Main {
 //        System.out.println("Remove elements from a list, which collection have: "
 //                + Arrays.toString(l2.toArray()));
 
-        l2.retainAll(l1);
-        System.out.println("Remove elements from a list, which collection haven't: "
-            + Arrays.toString(l2.toArray()));
+//        l2.retainAll(l1);
+//        System.out.println("Remove elements from a list, which collection haven't: "
+//            + Arrays.toString(l2.toArray()));
 
 //        l2.clear();
 //        System.out.println("Clear list: " + Arrays.toString(l2.toArray()));
@@ -64,7 +64,9 @@ public class Main {
 //
 //        System.out.println("Last index of element: " + l2.lastIndexOf("!"));
 
-
+        l2.add(2, "boys");
+        System.out.println(l2);
+        System.out.println(l2.subList(1, 2));
 
     }
 
