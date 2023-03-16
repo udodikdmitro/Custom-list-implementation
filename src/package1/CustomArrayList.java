@@ -253,7 +253,9 @@ public class CustomArrayList implements List<String> {
         String[] ar = new String[toIndex - fromIndex + 1];
         System.arraycopy(elements,
                 fromIndex, ar, 0, (toIndex - fromIndex + 1));
-        return Arrays.asList(ar);
+        CustomArrayList cuAr = new CustomArrayList();
+        Collections.addAll(cuAr, ar);
+        return cuAr;
     }
 
     /*
@@ -277,6 +279,6 @@ toString()
             }
         }
         s.append(" \"").append(elements[size - 1]).append("\"").append("]");
-        return s.substring(0);
+        return s.toString();
     }
 }
