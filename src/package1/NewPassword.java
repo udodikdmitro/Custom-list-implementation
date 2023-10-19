@@ -7,38 +7,25 @@ class NewPassword{
 
     public boolean makePassword(String myPassword){
 
-        if(Objects.equals(myPassword, LOGIN)){
+        if (Objects.equals(myPassword, LOGIN)){
             return false;
         }
 
-        if(!myPassword.matches("[\\da-zA-Zа-яА-Я–!@#$%^&*()_+:;,.-]+")){
+        if (!myPassword.matches("[\\da-zA-Zа-яА-Я–!@#$%^&*()_+:;,.-]+")){
             return false;
         }
 
-        String chars = "–!@#$%^&*()_-+:;,.";
-        int i = 0;
-
-        char[] charArray = chars.toCharArray();
-        char[] passwordCharArray = myPassword.toCharArray();
-
-        for(char ch: charArray){
-
-            for (char chP: passwordCharArray){
-                if(chP == ch){
-                    i++;
-                }
-                if(i > 3){
-                    return false;
-                }
+        for (int i = 0; i < myPassword.length() - 3; i++) {
+            if (myPassword.charAt(i) == myPassword.charAt(i + 1)
+                    && myPassword.charAt(i) == myPassword.charAt(i + 2)){
+                return false;
             }
-            i = 0;
         }
-
         return true;
     }
     public static void main(String[] args) {
 
         NewPassword newPassword = new NewPassword();
-        System.out.println(newPassword.makePassword("7655757643cfnhv****c-xnx776"));
+        System.out.println(newPassword.makePassword("7655757643cfnhv**c-xnx776"));
     }
 }
